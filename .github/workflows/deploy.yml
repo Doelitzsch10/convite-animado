@@ -1,0 +1,59 @@
+name: Build e publicação (GitHub Pages)
+
+# O build roda em TODAS as branches: assim você vê se uma branch nova compila.
+# A publicação no GitHub Pages só acontece na branch convite-v1, porque o Pages
+# tem um único site: se todas as branches publicassem, a última a receber push
+# sobrescreveria o convite no ar.
+# Para trocar a branch publicada, altere 'convite-v1' nas três linhas marcadas com <-.
+
+on:
+  push:
+    branches: ["**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Preparar publicação
+        if: github.ref == 'refs/heads/convite-v1' # <- branch publicada
+        uses: actions/configure-pages@v5
+
+      - name: Enviar site para o Pages
+        if: github.ref == 'refs/heads/convite-v1' # <- branch publicada
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/convite-v1' # <- branch publicada
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

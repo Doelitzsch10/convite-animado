@@ -64,7 +64,18 @@ tools/                   # scripts Python
 
 ## Publicar de graça
 
-Conecte o repositório à Cloudflare Pages, Vercel ou Netlify (build: `npm run build`, saída: `dist`). O endereço gratuito sai como `nome-do-projeto.pages.dev` (ou `.vercel.app` / `.netlify.app`). Domínio próprio é opcional e pago.
+### GitHub Pages (configurado)
+
+O GitHub Actions (`.github/workflows/deploy.yml`) roda `npm ci` e `npm run build` em **todas as branches**, então qualquer branch nova (criada a partir de outra) já herda o workflow e mostra na aba Actions se compila. A publicação no Pages acontece só quando o push é na branch `convite-v1`, porque o Pages tem um único site no ar. Para publicar outra branch, troque `convite-v1` nas três linhas marcadas com `<-` no workflow.
+
+Configuração única no GitHub:
+1. **Settings > Pages > Build and deployment > Source:** escolha **GitHub Actions**.
+2. **Settings > Environments > github-pages > Deployment branches:** adicione a branch `convite-v1` (por padrão só a branch principal pode publicar). Se preferir, faça merge da `convite-v1` na `main` e ajuste o `branches:` do workflow.
+3. Acompanhe o deploy na aba **Actions**.
+
+O endereço fica `https://doelitzsch10.github.io/convite-animado/`. Para links por convidado, acrescente `?convidado=nome-sobrenome` (ex.: `.../convite-animado/?convidado=maria-silva`).
+
+Outras opções gratuitas: Cloudflare Pages, Vercel ou Netlify (build: `npm run build`, saída: `dist`).
 
 ## Arte e áudio
 

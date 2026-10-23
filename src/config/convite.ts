@@ -2,18 +2,22 @@
 // Troque os valores abaixo e o convite inteiro se atualiza.
 
 export const convite = {
-  nome: "Ravi",
-  idade: 3,
+  nome: "Thomas",
+  idade: 6 ,
 
   // Data e hora da festa (ISO com fuso de São Paulo)
-  dataISO: "2026-12-12T15:00:00-03:00",
+  dataISO: "2027-02-13T13:00:00-03:00",
 
-  local: "Salão de Festas Aventura",
-  endereco: "Rua das Estrelas, 123 - São Paulo, SP",
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Rua+das+Estrelas+123+Sao+Paulo",
+  local: "Girafestas Buffet",
+  endereco: " Av. Waldemar Carlos Pereira, 1697 - Vila Talarico, São Paulo ",
+  mapsUrl: "https://www.google.com/maps/place/Girafestas+Buffet/@-23.5469765,-46.5134408,807m/data=!3m2!1e3!4b1!4m6!3m5!1s0x94ce67538d4b3379:0xb5c6c33039951ab0!8m2!3d-23.5469765!4d-46.5108659!16s%2Fg%2F11spp4w982?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D",
 
   // WhatsApp com DDI + DDD + número, só dígitos
   whatsapp: "5511999999999",
+
+  // Coordenadas do local (usadas no mapa do pop-up e no Waze/Apple Maps).
+  // No Google Maps: clique com o botão direito no ponto > clique nos números.
+  coordenadas: { lat: -23.5469765, lng: -46.5108659 },
 
   // Opcional: música de fundo (use arquivo livre de direitos em /public/audio)
   musicUrl: "",
@@ -77,6 +81,34 @@ export function convidadoDoLink(): { slug: string; nome: string } | null {
     .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
     .join(" ");
   return nome ? { slug, nome } : null;
+}
+
+export function enderecoLimpo(): string {
+  return convite.endereco.trim().replace(/\s+/g, " ");
+}
+
+// ---------- localização ----------
+const { lat, lng } = convite.coordenadas;
+
+// Mapa embutido do OpenStreetMap (gratuito, sem chave)
+export function mapaEmbutidoUrl(): string {
+  const dx = 0.004;
+  const dy = 0.0025;
+  const bbox = [lng - dx, lat - dy, lng + dx, lat + dy].join(",");
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
+}
+
+// Abre a rota no Google Maps (mostra a página do local, como você colou em mapsUrl)
+export function linkGoogleMaps(): string {
+  return convite.mapsUrl;
+}
+
+export function linkWaze(): string {
+  return `https://waze.com/ul?ll=${lat},${lng}&navigate=yes&zoom=17`;
+}
+
+export function linkAppleMaps(): string {
+  return `https://maps.apple.com/?daddr=${lat},${lng}&q=${encodeURIComponent(convite.local)}`;
 }
 
 export function linkWhatsapp(): string {
