@@ -29,7 +29,18 @@ src/
 
 ## Publicar de graça
 
-Conecte o repositório à Cloudflare Pages, Vercel ou Netlify (build: `npm run build`, saída: `dist`).
+### GitHub Pages (configurado)
+
+A cada push na branch `convite-v1`, o GitHub Actions (`.github/workflows/deploy.yml`) roda `npm run build` e publica a pasta `dist`.
+
+Configuração única no GitHub:
+1. **Settings > Pages > Build and deployment > Source:** escolha **GitHub Actions**.
+2. **Settings > Environments > github-pages > Deployment branches:** adicione a branch `convite-v1` (por padrão só a branch principal pode publicar). Se preferir, faça merge da `convite-v1` na `main` e ajuste o `branches:` do workflow.
+3. Acompanhe o deploy na aba **Actions**.
+
+O endereço fica `https://doelitzsch10.github.io/convite-animado/`. Para links por convidado, acrescente `?convidado=nome-sobrenome` (ex.: `.../convite-animado/?convidado=maria-silva`).
+
+Outras opções gratuitas: Cloudflare Pages, Vercel ou Netlify (build: `npm run build`, saída: `dist`).
 
 ## Arte e áudio
 
