@@ -69,6 +69,20 @@ export function placasDaCorrida(): string[] {
   ];
 }
 
+// Link personalizado: https://seu-site/?convidado=maria-silva
+// Mostra "Maria Silva" no convite e identifica a resposta no banco.
+export function convidadoDoLink(): { slug: string; nome: string } | null {
+  const bruto = new URLSearchParams(window.location.search).get("convidado");
+  if (!bruto) return null;
+  const slug = bruto.toLowerCase().slice(0, 60);
+  const nome = slug
+    .split("-")
+    .filter(Boolean)
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(" ");
+  return nome ? { slug, nome } : null;
+}
+
 export function enderecoLimpo(): string {
   return convite.endereco.trim().replace(/\s+/g, " ");
 }
