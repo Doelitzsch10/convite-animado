@@ -31,7 +31,7 @@ src/
 
 ### GitHub Pages (configurado)
 
-A cada push na branch `convite-v1`, o GitHub Actions (`.github/workflows/deploy.yml`) roda `npm run build` e publica a pasta `dist`.
+O GitHub Actions (`.github/workflows/deploy.yml`) roda `npm ci` e `npm run build` em **todas as branches**, então qualquer branch nova (criada a partir de outra) já herda o workflow e mostra na aba Actions se compila. A publicação no Pages acontece só quando o push é na branch `convite-v1`, porque o Pages tem um único site no ar. Para publicar outra branch, troque `convite-v1` nas três linhas marcadas com `<-` no workflow.
 
 Configuração única no GitHub:
 1. **Settings > Pages > Build and deployment > Source:** escolha **GitHub Actions**.
