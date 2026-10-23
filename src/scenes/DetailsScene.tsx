@@ -1,4 +1,6 @@
 import Countdown from "../components/Countdown";
+import RsvpForm from "../components/RsvpForm";
+import { rsvpAtivo } from "../lib/supabase";
 import {
   convite,
   dataFesta,
@@ -35,9 +37,13 @@ export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
         <a className="btn" href={convite.mapsUrl} target="_blank" rel="noreferrer">
           COMO CHEGAR
         </a>
-        <a className="btn green" href={linkWhatsapp()} target="_blank" rel="noreferrer">
-          CONFIRMAR PRESENÇA
-        </a>
+        {rsvpAtivo ? (
+          <RsvpForm />
+        ) : (
+          <a className="btn green" href={linkWhatsapp()} target="_blank" rel="noreferrer">
+            CONFIRMAR PRESENÇA
+          </a>
+        )}
         <button className="link" onClick={onReplay}>
           ↺ correr de novo
         </button>

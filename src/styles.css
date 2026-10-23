@@ -262,3 +262,122 @@ body,
   color: #ffd60a;
   margin: 0;
 }
+
+/* ---------- confirmação de presença ---------- */
+.rsvp {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 3px solid #fff;
+  text-align: left;
+}
+
+.rsvp h3 {
+  margin: 0;
+  font-size: 11px;
+  color: #ffd60a;
+  text-align: center;
+}
+
+.rsvp label {
+  font-size: 8px;
+  line-height: 1.6;
+}
+
+.rsvp input,
+.rsvp textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px;
+  font-family: system-ui, sans-serif;
+  font-size: 16px; /* 16px evita o zoom automático no iPhone */
+  color: #0b1d6b;
+  background: #fff;
+  border: 3px solid #ffd60a;
+  border-radius: 0;
+}
+
+.rsvp textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.rsvp-choice {
+  display: flex;
+  gap: 8px;
+}
+
+.rsvp-choice button {
+  flex: 1;
+  padding: 12px 6px;
+  font: inherit;
+  font-size: 9px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 3px solid #fff;
+  cursor: pointer;
+}
+
+.rsvp-choice button.on {
+  color: #0b1d6b;
+  background: #ffd60a;
+}
+
+.rsvp-person {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.rsvp-person label {
+  flex: 1;
+}
+
+.rsvp-person .x {
+  height: 48px;
+  width: 44px;
+  font: inherit;
+  font-size: 12px;
+  color: #fff;
+  background: #e63946;
+  border: 3px solid #fff;
+  cursor: pointer;
+}
+
+.rsvp .add {
+  padding: 10px;
+  font: inherit;
+  font-size: 8px;
+  color: #fff;
+  background: none;
+  border: 3px dashed #fff;
+  cursor: pointer;
+}
+
+.rsvp-msg {
+  margin: 0;
+  font-size: 9px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.rsvp-msg.erro {
+  color: #ff9aa2;
+}
+
+a.link {
+  display: block;
+  text-align: center;
+  color: #fff;
+  font-size: 8px;
+  line-height: 1.6;
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+.rsvp-ok {
+  color: #7dff9a;
+}

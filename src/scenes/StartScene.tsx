@@ -1,10 +1,13 @@
-import { convite } from "../config/convite";
+import { convidadoDoLink, convite } from "../config/convite";
 
 export default function StartScene({ onStart }: { onStart: () => void }) {
+  const convidado = convidadoDoLink();
   return (
     <div className="scene start" onClick={onStart}>
       <div className="speed-bg" aria-hidden />
-      <p className="kicker">VOCÊ FOI CONVIDADO!</p>
+      <p className="kicker">
+        {convidado ? `${convidado.nome.toUpperCase()}, VOCÊ FOI CONVIDADO!` : "VOCÊ FOI CONVIDADO!"}
+      </p>
       <h1 className="title">
         {convite.nome.toUpperCase()}
         <span>{convite.idade} ANOS</span>
