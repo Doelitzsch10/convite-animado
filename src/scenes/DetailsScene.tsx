@@ -1,13 +1,18 @@
+import { useState } from "react";
 import Countdown from "../components/Countdown";
+import MapaModal from "../components/MapaModal";
 import {
   convite,
   dataFesta,
   dataLonga,
+  enderecoLimpo,
   hora,
   linkWhatsapp,
 } from "../config/convite";
 
 export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
+  const [mapaAberto, setMapaAberto] = useState(false);
+
   return (
     <div className="scene details">
       <div className="card">
@@ -28,13 +33,13 @@ export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
           <li>
             <span>📍</span> {convite.local}
             <br />
-            <small>{convite.endereco}</small>
+            <small>{enderecoLimpo()}</small>
           </li>
         </ul>
 
-        <a className="btn" href={convite.mapsUrl} target="_blank" rel="noreferrer">
-          COMO CHEGAR
-        </a>
+        <button className="btn" onClick={() => setMapaAberto(true)}>
+          📍 COMO CHEGAR
+        </button>
         <a className="btn green" href={linkWhatsapp()} target="_blank" rel="noreferrer">
           CONFIRMAR PRESENÇA
         </a>
@@ -42,6 +47,8 @@ export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
           ↺ correr de novo
         </button>
       </div>
+
+      {mapaAberto && <MapaModal onClose={() => setMapaAberto(false)} />}
     </div>
   );
 }

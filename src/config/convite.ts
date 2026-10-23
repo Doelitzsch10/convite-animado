@@ -15,6 +15,10 @@ export const convite = {
   // WhatsApp com DDI + DDD + número, só dígitos
   whatsapp: "5511999999999",
 
+  // Coordenadas do local (usadas no mapa do pop-up e no Waze/Apple Maps).
+  // No Google Maps: clique com o botão direito no ponto > clique nos números.
+  coordenadas: { lat: -23.5469765, lng: -46.5108659 },
+
   // Opcional: música de fundo (use arquivo livre de direitos em /public/audio)
   musicUrl: "",
 
@@ -63,6 +67,34 @@ export function placasDaCorrida(): string[] {
     `DIA ${dataCurta()} AS ${hora()}`,
     convite.local.toUpperCase(),
   ];
+}
+
+export function enderecoLimpo(): string {
+  return convite.endereco.trim().replace(/\s+/g, " ");
+}
+
+// ---------- localização ----------
+const { lat, lng } = convite.coordenadas;
+
+// Mapa embutido do OpenStreetMap (gratuito, sem chave)
+export function mapaEmbutidoUrl(): string {
+  const dx = 0.004;
+  const dy = 0.0025;
+  const bbox = [lng - dx, lat - dy, lng + dx, lat + dy].join(",");
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
+}
+
+// Abre a rota no Google Maps (mostra a página do local, como você colou em mapsUrl)
+export function linkGoogleMaps(): string {
+  return convite.mapsUrl;
+}
+
+export function linkWaze(): string {
+  return `https://waze.com/ul?ll=${lat},${lng}&navigate=yes&zoom=17`;
+}
+
+export function linkAppleMaps(): string {
+  return `https://maps.apple.com/?daddr=${lat},${lng}&q=${encodeURIComponent(convite.local)}`;
 }
 
 export function linkWhatsapp(): string {
