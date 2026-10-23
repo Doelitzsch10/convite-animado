@@ -2,15 +2,15 @@
 // Troque os valores abaixo e o convite inteiro se atualiza.
 
 export const convite = {
-  nome: "Ravi",
-  idade: 3,
+  nome: "Thomas",
+  idade: 6 ,
 
   // Data e hora da festa (ISO com fuso de São Paulo)
-  dataISO: "2026-12-12T15:00:00-03:00",
+  dataISO: "2027-02-13T13:00:00-03:00",
 
-  local: "Salão de Festas Aventura",
-  endereco: "Rua das Estrelas, 123 - São Paulo, SP",
-  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Rua+das+Estrelas+123+Sao+Paulo",
+  local: "Girafestas Buffet",
+  endereco: " Av. Waldemar Carlos Pereira, 1697 - Vila Talarico, São Paulo ",
+  mapsUrl: "https://www.google.com/maps/place/Girafestas+Buffet/@-23.5469765,-46.5134408,807m/data=!3m2!1e3!4b1!4m6!3m5!1s0x94ce67538d4b3379:0xb5c6c33039951ab0!8m2!3d-23.5469765!4d-46.5108659!16s%2Fg%2F11spp4w982?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D",
 
   // WhatsApp com DDI + DDD + número, só dígitos
   whatsapp: "5511999999999",
