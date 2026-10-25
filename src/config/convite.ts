@@ -21,7 +21,7 @@ export const convite = {
 
   // Vídeo que substitui a cena de corrida. Coloque o arquivo em public/video/
   // e escreva o caminho aqui, ex.: "video/convite.mp4". Vazio = usa a corrida em canvas.
-  videoUrl: "",
+  videoUrl: "video/cena.mp4",
   // Opcional: imagem mostrada antes do vídeo carregar, ex.: "video/capa.jpg"
   videoPoster: "",
 

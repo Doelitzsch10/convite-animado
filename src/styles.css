@@ -531,3 +531,28 @@ a.link {
 .rsvp-ok {
   color: #7dff9a;
 }
+
+/* ---------- cena em vídeo ---------- */
+.run:has(.video) {
+  background: #000;
+}
+
+.stage.video {
+  object-fit: contain; /* mostra o vídeo inteiro, mesmo horizontal em tela vertical */
+  image-rendering: auto;
+  background: #000;
+}
+
+.video-toque {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 20px;
+  font: inherit;
+  font-size: 12px;
+  color: #fff;
+  background: #e63946;
+  border: 3px solid #fff;
+  cursor: pointer;
+}
