@@ -538,7 +538,7 @@ a.link {
 }
 
 .stage.video {
-  object-fit: contain; /* mostra o vídeo inteiro, mesmo horizontal em tela vertical */
+  object-fit: contain; /* vídeo 9:16 inteiro; em telas muito altas ou no computador sobram faixas pretas */
   image-rendering: auto;
   background: #000;
 }

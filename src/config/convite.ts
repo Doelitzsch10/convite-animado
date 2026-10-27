@@ -19,11 +19,9 @@ export const convite = {
   // No Google Maps: clique com o botão direito no ponto > clique nos números.
   coordenadas: { lat: -23.5469765, lng: -46.5108659 },
 
-  // Vídeo que substitui a cena de corrida. Coloque o arquivo em public/video/
-  // e escreva o caminho aqui, ex.: "video/convite.mp4". Vazio = usa a corrida em canvas.
+  // Vídeo (9:16, feito para celular em pé) que substitui a cena de corrida.
+  // Arquivo em public/video/; caminho aqui, ex.: "video/cena.mp4". Vazio = corrida em canvas.
   videoUrl: "video/cena.mp4",
-  // Versão vertical (9:16) usada em celular em pé. Vazio = usa sempre a horizontal.
-  videoVerticalUrl: "video/cena-vertical.mp4",
   // Opcional: imagem mostrada antes do vídeo carregar, ex.: "video/capa.jpg"
   videoPoster: "",
 
