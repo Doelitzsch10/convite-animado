@@ -19,6 +19,10 @@ export const convite = {
   // No Google Maps: clique com o botão direito no ponto > clique nos números.
   coordenadas: { lat: -23.5469765, lng: -46.5108659 },
 
+  // Imagem de capa (9:16) da tela inicial, com título e botão desenhados.
+  // Arquivo em public/img/. Vazio = usa o layout simples feito em código.
+  capaUrl: "img/inicio.jpg",
+
   // Vídeo (9:16, feito para celular em pé) que substitui a cena de corrida.
   // Arquivo em public/video/; caminho aqui, ex.: "video/cena.mp4". Vazio = corrida em canvas.
   videoUrl: "video/cena.mp4",

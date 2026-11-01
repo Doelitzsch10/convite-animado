@@ -5,11 +5,9 @@ import VideoScene from "./scenes/VideoScene";
 import DetailsScene from "./scenes/DetailsScene";
 import { startMusic, unlockAudio, toggleMute, isMuted } from "./audio";
 import { convite } from "./config/convite";
+import { assetUrl } from "./lib/assets";
 
 type Scene = "start" | "run" | "details";
-
-// "video/convite.mp4" vira "<base>/video/convite.mp4" (funciona no GitHub Pages)
-const assetUrl = (p: string) => (/^(https?:)?\/\//.test(p) ? p : import.meta.env.BASE_URL + p.replace(/^\.?\//, ""));
 
 export default function App() {
   const [scene, setScene] = useState<Scene>("start");
