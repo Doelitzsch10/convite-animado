@@ -1,6 +1,7 @@
-import { useState } from "react";
-import Countdown from "../components/Countdown";
+import { useState, type CSSProperties } from "react";
+import Countdown, { useContagem } from "../components/Countdown";
 import MapaModal from "../components/MapaModal";
+import RsvpModal from "../components/RsvpModal";
 import {
   convite,
   dataFesta,
@@ -9,9 +10,81 @@ import {
   hora,
   linkWhatsapp,
 } from "../config/convite";
+import { assetUrl } from "../lib/assets";
+import { rsvpAtivo } from "../lib/supabase";
+
+// Posição (em % da imagem) dos quatro quadrados amarelos da arte, na ordem: dias, horas, min, seg
+const QUADRADOS = [24.6, 38.4, 52.3, 66.2];
+
+function Quadrado({ x, valor, rotulo }: { x: number; valor: number; rotulo: string }) {
+  const texto = String(valor).padStart(2, "0");
+  return (
+    <div
+      className={`capa-celula${texto.length > 2 ? " tres" : ""}`}
+      style={{ left: `${x}%` } as CSSProperties}
+    >
+      <b>{texto}</b>
+      <small>{rotulo}</small>
+    </div>
+  );
+}
+
+// Tela final em imagem: contagem nos quadrados e botões transparentes sobre a arte
+function CapaFinal() {
+  const [mapaAberto, setMapaAberto] = useState(false);
+  const [rsvpAberto, setRsvpAberto] = useState(false);
+  const t = useContagem(dataFesta());
+  const capa = assetUrl(convite.capaFinalUrl);
+
+  return (
+    <div className="scene capa">
+      <div className="capa-fundo" style={{ backgroundImage: `url(${capa})` }} aria-hidden />
+      <div className="capa-moldura">
+        <img
+          className="capa-img"
+          src={capa}
+          alt={`${convite.nome} faz ${convite.idade} anos. ${dataLonga()}, às ${hora()}, em ${convite.local}, ${enderecoLimpo()}.`}
+          draggable={false}
+        />
+
+        <Quadrado x={QUADRADOS[0]} valor={t.d} rotulo="DIAS" />
+        <Quadrado x={QUADRADOS[1]} valor={t.h} rotulo="HORAS" />
+        <Quadrado x={QUADRADOS[2]} valor={t.m} rotulo="MIN" />
+        <Quadrado x={QUADRADOS[3]} valor={t.s} rotulo="SEG" />
+
+        <button
+          className="capa-hit capa-chegar"
+          aria-label="Como chegar"
+          onClick={() => setMapaAberto(true)}
+        />
+
+        {rsvpAtivo ? (
+          <button
+            className="capa-hit capa-confirmar"
+            aria-label="Confirmar presença"
+            onClick={() => setRsvpAberto(true)}
+          />
+        ) : (
+          <a
+            className="capa-hit capa-confirmar"
+            aria-label="Confirmar presença pelo WhatsApp"
+            href={linkWhatsapp()}
+            target="_blank"
+            rel="noreferrer"
+          />
+        )}
+      </div>
+
+      {mapaAberto && <MapaModal onClose={() => setMapaAberto(false)} />}
+      {rsvpAberto && <RsvpModal onClose={() => setRsvpAberto(false)} />}
+    </div>
+  );
+}
 
 export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
   const [mapaAberto, setMapaAberto] = useState(false);
+
+  if (convite.capaFinalUrl) return <CapaFinal />;
 
   return (
     <div className="scene details">
@@ -40,9 +113,13 @@ export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
         <button className="btn" onClick={() => setMapaAberto(true)}>
           📍 COMO CHEGAR
         </button>
-        <a className="btn green" href={linkWhatsapp()} target="_blank" rel="noreferrer">
-          CONFIRMAR PRESENÇA
-        </a>
+        {rsvpAtivo ? (
+          <RsvpInline />
+        ) : (
+          <a className="btn green" href={linkWhatsapp()} target="_blank" rel="noreferrer">
+            CONFIRMAR PRESENÇA
+          </a>
+        )}
         <button className="link" onClick={onReplay}>
           ↺ correr de novo
         </button>
@@ -50,5 +127,17 @@ export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
 
       {mapaAberto && <MapaModal onClose={() => setMapaAberto(false)} />}
     </div>
+  );
+}
+
+function RsvpInline() {
+  const [aberto, setAberto] = useState(false);
+  return (
+    <>
+      <button className="btn green" onClick={() => setAberto(true)}>
+        CONFIRMAR PRESENÇA
+      </button>
+      {aberto && <RsvpModal onClose={() => setAberto(false)} />}
+    </>
   );
 }

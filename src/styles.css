@@ -637,3 +637,83 @@ a.link {
   border: 2px solid #fff;
   pointer-events: none;
 }
+
+/* ---------- tela final em imagem: contagem nos quadrados e botões ---------- */
+/* --u = 1% da largura da imagem; os textos escalam junto com ela */
+.capa-moldura {
+  --u: calc(min(100vw, 100dvh * 1080 / 1934) / 100);
+}
+
+.capa-celula {
+  position: absolute;
+  top: 29.4%;
+  width: 9.3%;
+  height: 5.2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 0.5);
+  pointer-events: none;
+  color: #4a2a00;
+  text-shadow: 0 calc(var(--u) * 0.25) 0 rgba(255, 255, 255, 0.65);
+}
+
+.capa-celula b {
+  font-size: calc(var(--u) * 3.6);
+  line-height: 1;
+}
+
+.capa-celula.tres b {
+  font-size: calc(var(--u) * 2.6); /* 100 dias ou mais: 3 dígitos */
+}
+
+.capa-celula small {
+  font-size: calc(var(--u) * 1.2);
+  line-height: 1;
+  color: #7a4300;
+}
+
+.capa-hit {
+  position: absolute;
+  display: block;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.capa-hit:active {
+  transform: scale(0.97);
+}
+
+.capa-chegar {
+  left: 33.5%;
+  top: 70%;
+  width: 33.5%;
+  height: 8%;
+}
+
+.capa-confirmar {
+  left: 33.5%;
+  top: 81.3%;
+  width: 33.5%;
+  height: 8%;
+  animation: capa-brilho 1.6s ease-in-out infinite;
+}
+
+/* formulário dentro do pop-up: sem moldura dupla */
+.modal .rsvp {
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+.modal .rsvp h3 {
+  display: none; /* o título já está no topo do pop-up */
+}
+
+.modal .rsvp .btn {
+  align-self: center;
+}

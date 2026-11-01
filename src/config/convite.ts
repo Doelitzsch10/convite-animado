@@ -23,6 +23,11 @@ export const convite = {
   // Arquivo em public/img/. Vazio = usa o layout simples feito em código.
   capaUrl: "img/inicio.jpg",
 
+  // Imagem (9:16) da tela final, com data, hora, local e botões desenhados.
+  // A contagem regressiva é colocada sobre os 4 quadrados amarelos da arte.
+  // Vazio = usa o layout simples feito em código.
+  capaFinalUrl: "img/final.jpg",
+
   // Vídeo (9:16, feito para celular em pé) que substitui a cena de corrida.
   // Arquivo em public/video/; caminho aqui, ex.: "video/cena.mp4". Vazio = corrida em canvas.
   videoUrl: "video/cena.mp4",

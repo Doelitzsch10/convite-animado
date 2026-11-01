@@ -12,13 +12,22 @@ function diff(target: Date) {
   };
 }
 
-export default function Countdown({ target }: { target: Date }) {
-  const [t, setT] = useState(() => diff(target));
-
+// Contagem regressiva que se atualiza a cada segundo.
+// Depende do valor numérico da data (e não do objeto Date, que muda a cada renderização).
+export function useContagem(target: Date) {
+  const alvo = target.getTime();
+  const [t, setT] = useState(() => diff(new Date(alvo)));
   useEffect(() => {
-    const id = setInterval(() => setT(diff(target)), 1000);
+    const alvoData = new Date(alvo);
+    setT(diff(alvoData));
+    const id = setInterval(() => setT(diff(alvoData)), 1000);
     return () => clearInterval(id);
-  }, [target]);
+  }, [alvo]);
+  return t;
+}
+
+export default function Countdown({ target }: { target: Date }) {
+  const t = useContagem(target);
 
   if (t.over) return <p className="countdown-over">A FESTA COMEÇOU! 🎉</p>;
 
