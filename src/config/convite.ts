@@ -28,6 +28,10 @@ export const convite = {
   // Vazio = usa o layout simples feito em código.
   capaFinalUrl: "img/final.jpg",
 
+  // Arte (3:4) do pop-up "Como chegar": moldura com janela do mapa e 4 botões desenhados.
+  // Vazio = usa o pop-up simples feito em código.
+  mapaArteUrl: "img/mapa.jpg",
+
   // Vídeo (9:16, feito para celular em pé) que substitui a cena de corrida.
   // Arquivo em public/video/; caminho aqui, ex.: "video/cena.mp4". Vazio = corrida em canvas.
   videoUrl: "video/cena.mp4",
@@ -106,9 +110,10 @@ export function enderecoLimpo(): string {
 const { lat, lng } = convite.coordenadas;
 
 // Mapa embutido do OpenStreetMap (gratuito, sem chave)
-export function mapaEmbutidoUrl(): string {
-  const dx = 0.004;
-  const dy = 0.0025;
+// escala < 1 aproxima o mapa, > 1 afasta
+export function mapaEmbutidoUrl(escala = 1): string {
+  const dx = 0.004 * escala;
+  const dy = 0.0025 * escala;
   const bbox = [lng - dx, lat - dy, lng + dx, lat + dy].join(",");
   return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
 }
