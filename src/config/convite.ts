@@ -15,7 +15,7 @@ export const convite = {
   // Endereço (termina em /exec) do Google Apps Script que grava as confirmações na planilha.
   // Passo a passo no README, seção "Confirmação de presença". Vazio = o pop-up avisa que
   // a confirmação ainda não está disponível.
-  planilhaUrl: "",
+  planilhaUrl: "https://script.google.com/macros/s/AKfycbxsBji8Kez7mkIr-H5eyGnQJuSDHOAZ_NGG1eDbq9nrVxfbvrdScX3D-KZgXcS8l_ty/exec",
 
   // Coordenadas do local (usadas no mapa do pop-up e no Waze/Apple Maps).
   // No Google Maps: clique com o botão direito no ponto > clique nos números.
