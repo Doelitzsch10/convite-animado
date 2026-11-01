@@ -12,8 +12,10 @@ export const convite = {
   endereco: " Av. Waldemar Carlos Pereira, 1697 - Vila Talarico, São Paulo ",
   mapsUrl: "https://www.google.com/maps/place/Girafestas+Buffet/@-23.5469765,-46.5134408,807m/data=!3m2!1e3!4b1!4m6!3m5!1s0x94ce67538d4b3379:0xb5c6c33039951ab0!8m2!3d-23.5469765!4d-46.5108659!16s%2Fg%2F11spp4w982?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D",
 
-  // WhatsApp com DDI + DDD + número, só dígitos
-  whatsapp: "5511999999999",
+  // Endereço (termina em /exec) do Google Apps Script que grava as confirmações na planilha.
+  // Passo a passo no README, seção "Confirmação de presença". Vazio = o pop-up avisa que
+  // a confirmação ainda não está disponível.
+  planilhaUrl: "",
 
   // Coordenadas do local (usadas no mapa do pop-up e no Waze/Apple Maps).
   // No Google Maps: clique com o botão direito no ponto > clique nos números.
@@ -129,9 +131,4 @@ export function linkWaze(): string {
 
 export function linkAppleMaps(): string {
   return `https://maps.apple.com/?daddr=${lat},${lng}&q=${encodeURIComponent(convite.local)}`;
-}
-
-export function linkWhatsapp(): string {
-  const msg = `Oi! Confirmo presença na festa de ${convite.nome}! 🎉`;
-  return `https://wa.me/${convite.whatsapp}?text=${encodeURIComponent(msg)}`;
 }

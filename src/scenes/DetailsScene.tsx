@@ -8,10 +8,8 @@ import {
   dataLonga,
   enderecoLimpo,
   hora,
-  linkWhatsapp,
 } from "../config/convite";
 import { assetUrl } from "../lib/assets";
-import { rsvpAtivo } from "../lib/supabase";
 
 // Posição (em % da imagem) dos quatro quadrados amarelos da arte, na ordem: dias, horas, min, seg
 const QUADRADOS = [24.6, 38.4, 52.3, 66.2];
@@ -58,21 +56,11 @@ function CapaFinal() {
           onClick={() => setMapaAberto(true)}
         />
 
-        {rsvpAtivo ? (
-          <button
-            className="capa-hit capa-confirmar"
-            aria-label="Confirmar presença"
-            onClick={() => setRsvpAberto(true)}
-          />
-        ) : (
-          <a
-            className="capa-hit capa-confirmar"
-            aria-label="Confirmar presença pelo WhatsApp"
-            href={linkWhatsapp()}
-            target="_blank"
-            rel="noreferrer"
-          />
-        )}
+        <button
+          className="capa-hit capa-confirmar"
+          aria-label="Confirmar presença"
+          onClick={() => setRsvpAberto(true)}
+        />
       </div>
 
       {mapaAberto && <MapaModal onClose={() => setMapaAberto(false)} />}
@@ -83,6 +71,7 @@ function CapaFinal() {
 
 export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
   const [mapaAberto, setMapaAberto] = useState(false);
+  const [rsvpAberto, setRsvpAberto] = useState(false);
 
   if (convite.capaFinalUrl) return <CapaFinal />;
 
@@ -113,31 +102,16 @@ export default function DetailsScene({ onReplay }: { onReplay: () => void }) {
         <button className="btn" onClick={() => setMapaAberto(true)}>
           📍 COMO CHEGAR
         </button>
-        {rsvpAtivo ? (
-          <RsvpInline />
-        ) : (
-          <a className="btn green" href={linkWhatsapp()} target="_blank" rel="noreferrer">
-            CONFIRMAR PRESENÇA
-          </a>
-        )}
+        <button className="btn green" onClick={() => setRsvpAberto(true)}>
+          CONFIRMAR PRESENÇA
+        </button>
         <button className="link" onClick={onReplay}>
           ↺ correr de novo
         </button>
       </div>
 
       {mapaAberto && <MapaModal onClose={() => setMapaAberto(false)} />}
+      {rsvpAberto && <RsvpModal onClose={() => setRsvpAberto(false)} />}
     </div>
-  );
-}
-
-function RsvpInline() {
-  const [aberto, setAberto] = useState(false);
-  return (
-    <>
-      <button className="btn green" onClick={() => setAberto(true)}>
-        CONFIRMAR PRESENÇA
-      </button>
-      {aberto && <RsvpModal onClose={() => setAberto(false)} />}
-    </>
   );
 }

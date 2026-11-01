@@ -2,7 +2,7 @@
 
 Convite de aniversário animado: o personagem corre por um cenário com parallax, coleta estrelas e passa por placas com os dados da festa. No final, contagem regressiva, botão de localização e confirmação de presença com o nome de cada pessoa.
 
-Tudo gratuito: Vite + React + TypeScript, Canvas 2D, Supabase (plano gratuito) e hospedagem estática. Scripts em Python (só biblioteca padrão) para gerar links e listar confirmados.
+Tudo gratuito: Vite + React + TypeScript, Canvas 2D, Google Planilhas (via Apps Script) e hospedagem estática. Script em Python (só biblioteca padrão) para gerar links por convidado.
 
 ## Rodar
 
@@ -14,19 +14,38 @@ npm run build    # gera /dist
 
 ## Personalizar
 
-Edite `src/config/convite.ts`: nome, idade, data/hora, local, mapa, WhatsApp, música (opcional) e sprite próprio (opcional).
+Edite `src/config/convite.ts`: nome, idade, data/hora, local, coordenadas do mapa, endereço da planilha (`planilhaUrl`), imagens de capa, final e mapa, vídeo e música (opcionais).
 
-## Confirmação de presença (Supabase)
+## Confirmação de presença (Google Planilhas)
 
-O convidado informa o próprio nome e quantos acompanhantes quiser (um nome por pessoa, até 8), ou avisa que não vai. Sem o Supabase configurado, o botão cai para o WhatsApp.
+O convidado toca em "Confirmar presença", informa o próprio nome e quantos acompanhantes quiser (um nome por pessoa, até 8) ou avisa que não vai. Cada pessoa vira **uma linha** na sua planilha. Tudo gratuito, sem servidor.
 
-1. Crie uma conta e um projeto em supabase.com (plano gratuito).
-2. No painel, abra **SQL Editor**, cole o conteúdo de `supabase/schema.sql` e rode. Isso cria a tabela e garante que o site só consiga **inserir** respostas, nunca ler ou apagar.
-3. Em **Project Settings > API**, copie a URL do projeto e a chave pública (`anon`/`publishable`).
-4. Local: copie `.env.example` para `.env.local` e preencha.
-5. Publicado: cadastre as mesmas duas variáveis (`VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`) nas configurações do Cloudflare Pages/Vercel/Netlify e faça um novo deploy. O Vite grava os valores no momento do build.
+**Como funciona:** o site envia os dados para um Google Apps Script ligado à planilha (`google-sheets/Code.gs`), que grava as linhas. O script só grava: ele nunca devolve o conteúdo da planilha, então quem tem o link do convite não consegue ler a lista.
 
-Nunca coloque a chave secreta (`service_role`) no site nem no repositório.
+### Passo a passo (uma vez só)
+
+1. Em sheets.google.com, crie uma planilha em branco (ex.: "Confirmações Thomas").
+2. Menu **Extensões > Apps Script**. Apague o código de exemplo, cole o conteúdo de `google-sheets/Code.gs` e salve (ícone de disquete).
+3. Clique em **Implantar > Nova implantação**. Em "Selecionar tipo" (engrenagem), escolha **App da Web**. Configure:
+   - **Executar como:** Eu
+   - **Quem pode acessar:** Qualquer pessoa
+4. Clique em **Implantar** e autorize com a sua conta Google. Se aparecer "O Google não verificou este app", clique em **Avançado > Acessar (nome do projeto)**: o script é seu e só mexe na própria planilha.
+5. Copie o **URL do app da Web** (termina em `/exec`) e cole em `planilhaUrl`, no arquivo `src/config/convite.ts`. Envie o código ao GitHub; o deploy publica sozinho.
+6. Teste: abra o convite, confirme presença e veja a linha aparecer na aba **Confirmações** (a aba e o cabeçalho são criados no primeiro envio).
+
+> Se você alterar o `Code.gs` depois, é preciso publicar de novo: **Implantar > Gerenciar implantações > lápis > Versão: Nova versão > Implantar**. O URL continua o mesmo.
+
+### O que aparece na planilha
+
+Aba **Confirmações**, uma linha por pessoa: Data/hora, Responsável, Link do convidado, Pessoa, Presença (SIM/NÃO), Recado, Status e ID.
+
+- Se alguém responder de novo, as linhas antigas dessa pessoa/convite ficam com Status **SUBSTITUÍDA** e as novas com **ATIVA**. Nada é apagado. Filtre por ATIVA para ver a lista atual.
+- Aba **Resumo**: total de pessoas confirmadas e que não vão (só contam as ATIVAS).
+- Apertar "enviar" duas vezes (ou tentar de novo depois de uma falha de rede) não duplica linhas.
+
+### Proteções
+
+O endereço do script é público (como o de qualquer formulário), então o script valida tamanhos, limita a 10 pessoas por envio, ignora robôs que preenchem um campo-isca invisível e protege contra textos que virariam fórmula na planilha (`=`, `+`, `-`, `@`). Ele não impede alguém determinado de enviar respostas falsas: se isso acontecer, desative a implantação em Implantar > Gerenciar implantações e crie outra (o URL muda).
 
 ## Links personalizados por convidado
 
@@ -38,28 +57,19 @@ python tools/gerar_links.py --base-url https://SEU-SITE.pages.dev --arquivo conv
 
 Cada link (`?convidado=maria-silva`) mostra "MARIA SILVA, você foi convidado!" e já preenche o nome no formulário. Os links também ficam em `tools/links.csv`.
 
-## Ver quem confirmou
-
-```bash
-export SUPABASE_URL=https://SEU-PROJETO.supabase.co
-export SUPABASE_SERVICE_KEY=sua-chave-secreta   # service_role, só na sua máquina
-python tools/listar_confirmacoes.py
-```
-
-Mostra cada resposta com os nomes, os recados e o total de pessoas, e salva `tools/confirmacoes.csv` (abre no Excel/Planilhas). Se alguém responder de novo, vale a resposta mais recente.
-
 ## Estrutura
 
 ```
 src/
-├─ config/convite.ts     # dados da festa e link do convidado
-├─ game/runner.ts        # cena de corrida (canvas, parallax, estrelas, placas)
-├─ scenes/               # Start, Run, Details
-├─ components/           # Countdown, RsvpForm
-├─ lib/supabase.ts       # envio da confirmação
+├─ config/convite.ts     # dados da festa, imagens, vídeo e URL da planilha
+├─ game/runner.ts        # cena de corrida em canvas (usada se não houver vídeo)
+├─ scenes/               # Start (capa), Video/Run, Details (tela final)
+├─ components/           # Countdown, Modal, MapaModal, RsvpModal, RsvpForm
+├─ lib/                  # assets.ts (caminhos), planilha.ts (envio da confirmação)
 └─ audio.ts              # efeitos (WebAudio) e música (Howler)
-supabase/schema.sql      # tabela + regras de segurança
-tools/                   # scripts Python
+google-sheets/Code.gs    # script que grava as confirmações na planilha
+tools/gerar_links.py     # links personalizados por convidado
+public/img, public/video # capa, tela final, arte do mapa e vídeo
 ```
 
 ## Publicar de graça
