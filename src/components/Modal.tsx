@@ -16,19 +16,28 @@ export default function Modal({
   const fecharRef = useRef<HTMLButtonElement>(null);
   const caixaRef = useRef<HTMLDivElement>(null);
 
+  // Sempre chama a versão mais recente de onClose sem refazer o efeito abaixo
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
+  // Roda só quando o pop-up abre. Antes dependia de onClose, que muda a cada renderização
+  // do componente pai (ex.: a contagem regressiva atualiza todo segundo) e devolvia o foco
+  // para a janela, tirando o cursor do campo de texto.
   useEffect(() => {
     const overflowAnterior = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     (arte ? caixaRef.current : fecharRef.current)?.focus();
     const aoTeclar = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onCloseRef.current();
     };
     window.addEventListener("keydown", aoTeclar);
     return () => {
       document.body.style.overflow = overflowAnterior;
       window.removeEventListener("keydown", aoTeclar);
     };
-  }, [onClose, arte]);
+  }, [arte]);
 
   if (arte) {
     return (

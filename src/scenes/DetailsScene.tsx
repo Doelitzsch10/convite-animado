@@ -27,11 +27,24 @@ function Quadrado({ x, valor, rotulo }: { x: number; valor: number; rotulo: stri
   );
 }
 
+// Isolada em um componente próprio: só os quadrados são redesenhados a cada segundo,
+// e não a tela inteira (nem os pop-ups abertos por cima dela)
+function Contagem() {
+  const t = useContagem(dataFesta());
+  return (
+    <>
+      <Quadrado x={QUADRADOS[0]} valor={t.d} rotulo="DIAS" />
+      <Quadrado x={QUADRADOS[1]} valor={t.h} rotulo="HORAS" />
+      <Quadrado x={QUADRADOS[2]} valor={t.m} rotulo="MIN" />
+      <Quadrado x={QUADRADOS[3]} valor={t.s} rotulo="SEG" />
+    </>
+  );
+}
+
 // Tela final em imagem: contagem nos quadrados e botões transparentes sobre a arte
 function CapaFinal() {
   const [mapaAberto, setMapaAberto] = useState(false);
   const [rsvpAberto, setRsvpAberto] = useState(false);
-  const t = useContagem(dataFesta());
   const capa = assetUrl(convite.capaFinalUrl);
 
   return (
@@ -45,10 +58,7 @@ function CapaFinal() {
           draggable={false}
         />
 
-        <Quadrado x={QUADRADOS[0]} valor={t.d} rotulo="DIAS" />
-        <Quadrado x={QUADRADOS[1]} valor={t.h} rotulo="HORAS" />
-        <Quadrado x={QUADRADOS[2]} valor={t.m} rotulo="MIN" />
-        <Quadrado x={QUADRADOS[3]} valor={t.s} rotulo="SEG" />
+        <Contagem />
 
         <button
           className="capa-hit capa-chegar"
