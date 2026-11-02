@@ -29,7 +29,7 @@ O convidado toca em "Confirmar presença", informa o próprio nome e quantos aco
 3. Clique em **Implantar > Nova implantação**. Em "Selecionar tipo" (engrenagem), escolha **App da Web**. Configure:
    - **Executar como:** Eu
    - **Quem pode acessar:** Qualquer pessoa
-4. Clique em **Implantar** e autorize com a sua conta Google. Se aparecer "O Google não verificou este app", clique em **Avançado > Acessar (nome do projeto)**: o script é seu e só mexe na própria planilha.
+4. Clique em **Implantar** e autorize com a sua conta Google. A sequência costuma ser: escolher a conta > aviso **"O Google não verificou este app"** > link pequeno **Avançado** (embaixo, à esquerda) > **Acessar (nome do projeto) (não seguro)** > **Continuar** > **Permitir**. O aviso é normal: o script é seu e só mexe na própria planilha. Se nenhuma tela de autorização aparecer, force-a: no editor do Apps Script, escolha a função `doGet` na lista ao lado de "Depurar" e clique em **Executar**.
 5. Copie o **URL do app da Web** (termina em `/exec`) e cole em `planilhaUrl`, no arquivo `src/config/convite.ts`. Envie o código ao GitHub; o deploy publica sozinho.
 6. Teste: abra o convite, confirme presença e veja a linha aparecer na aba **Confirmações** (a aba e o cabeçalho são criados no primeiro envio).
 
